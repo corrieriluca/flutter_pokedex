@@ -9,12 +9,19 @@ class PokedexView extends StatefulWidget {
 }
 
 class PokedexViewState extends State<PokedexView> {
-  final _pokemonTest = Pokemon("Test", "Tets", PokemonType("grass"), PokemonType("fly"));
-  
+  final _pokemonTest = Pokemon(
+      'Test', 'Test', <PokemonType>[PokemonType('grass'), PokemonType('fly')]
+    );
+
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: _pokemonTest.getType1(),
+      child: Row(
+        children: <Widget>[
+          _pokemonTest.getType(0),
+          _pokemonTest.getType(1),
+        ],
+      )
     );
   }
 }
