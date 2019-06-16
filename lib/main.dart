@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'pokedexview.dart';
+import 'favouritesview.dart';
 
 void main() => runApp(PokedexApp());
 
@@ -10,6 +12,7 @@ class PokedexApp extends StatelessWidget {
       title: 'Pokédex',
       theme: ThemeData(
         primaryColor: Colors.red.shade800,
+        accentColor: Colors.white,
       ),
       home: DefaultTabController(
         length: 2,
@@ -53,33 +56,5 @@ class MainView extends StatelessWidget {
             FavouritesView(),
           ],
         ));
-  }
-}
-
-class PokedexView extends StatefulWidget {
-  @override
-  createState() => PokedexViewState();
-}
-
-class PokedexViewState extends State<PokedexView> {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text('Pokédex View here...'),
-    );
-  }
-}
-
-class FavouritesView extends StatefulWidget {
-  @override
-  createState() => FavouritesViewState();
-}
-
-class FavouritesViewState extends State<FavouritesView> {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text('Favourites View here...'),
-    );
   }
 }
