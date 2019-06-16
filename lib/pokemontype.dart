@@ -16,7 +16,7 @@ class PokemonType {
 
   ///Map (Dictionary) associating colors to the different Pokemon types
   ///available.
-  static Map<String, Color> typeColorCorrespondance = {
+  static final Map<String, Color> typeColorCorrespondance = {
     'grass': Color.fromARGB(255, 104, 193, 63),
     'poison': Color.fromARGB(255, 140, 40, 142),
     'fire': Color.fromARGB(255, 234, 107, 37),

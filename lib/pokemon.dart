@@ -1,27 +1,32 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'pokemontype.dart';
+import 'move.dart';
+import 'evolutionchain.dart';
 
 class Pokemon {
   final String name;
   final String spriteURL;
   final List<PokemonType> types;
+  final List<String> abilities;
+  final int height;
+  final int weight;
+  final String description;
+  final int pokedexID;
+  final List<Move> moves;
+  final EvolutionChain evolutionChain;
 
-  ///Contructor of the Pokemon class
-  Pokemon(this.name, this.spriteURL, this.types) {
-    if (name == null) {
-      throw ArgumentError('name of Pokemon cannot be null'
-          'Received : "$name"');
-    }
-    if (spriteURL == null) {
-      throw ArgumentError('spriteURL of Pokemon cannot be null'
-          'Received : "$spriteURL"');
-    }
-    if (types == null) {
-      throw ArgumentError('type1 of Pokemon cannot be null'
-          'Received : "$types"');
-    }
-  }
+  Pokemon(
+      this.name,
+      this.spriteURL,
+      this.types,
+      this.abilities,
+      this.height,
+      this.weight,
+      this.description,
+      this.pokedexID,
+      this.moves,
+      this.evolutionChain);
 
   String formatName() => name.replaceFirst(name[0], name[0].toUpperCase());
 
