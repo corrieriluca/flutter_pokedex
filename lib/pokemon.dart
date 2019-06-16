@@ -32,6 +32,10 @@ class Pokemon {
   ///this Pokemon (0 or 1).
   ///Only for displaying in the list view.
   Widget getType(int index) {
+    if (index < 0 || index > 1) {
+      index = 0; //by default to avoid any error...
+    }
+
     return Container(
       margin: const EdgeInsets.all(2.0),
       child: Center(
