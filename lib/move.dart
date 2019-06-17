@@ -11,7 +11,7 @@ class Move {
   PokemonType type;
 
   Move(this.name, this.moveURL) {
-    _retreiveType();
+    //_retreiveType(); // not needed for the moment
   }
   
   /// Retreive the type of the move from the PokeAPI

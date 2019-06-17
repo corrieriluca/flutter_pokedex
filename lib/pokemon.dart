@@ -4,23 +4,26 @@ import 'pokemontype.dart';
 import 'move.dart';
 import 'evolutionchain.dart';
 import 'tools.dart';
+import 'package:http/http.dart' as http;
 
 class Pokemon {
   final String name;
   final String spriteURL;
   final List<dynamic> _types;
-  List<PokemonType> types;
   final List<dynamic> _abilities;
-  List<String> abilities;
   final int height;
   final int weight;
   //final String description;
   final int pokedexID;
   final List<dynamic> _moves;
-  List<Move> moves;
   //final EvolutionChain evolutionChain;
   final List<dynamic> _stats;
-  List<int> stats;
+
+  List<PokemonType> types = <PokemonType>[];
+  List<String> abilities = <String>[];
+  List<Move> moves = <Move>[];
+  List<int> stats = <int>[];
+
 
   Pokemon(
       this.name,
@@ -36,23 +39,25 @@ class Pokemon {
       this._abilities,
       this._moves,
       this._stats) {
-        _buildProperties();
-      }
+    _buildProperties();
+  }
 
   Pokemon.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         spriteURL = json['sprites']['front_default'],
         _types = json['types'],
-        _abilities = json['abilites'],
+        _abilities = json['abilities'],
         height = json['height'],
         weight = json['weight'],
-        pokedexID = json['order'],
+        pokedexID = json['id'],
         _moves = json['moves'],
-        _stats = json['moves'];
+        _stats = json['stats'] {
+    _buildProperties();
+  }
 
   String formatName() => Tools.capitalizeFirst(name);
 
-  /// Calls different functions which all initialize some lists...
+  /// Calls different functions which all initialize some properties...
   void _buildProperties() {
     _buildTypes();
     _buildAbilities();
@@ -66,6 +71,10 @@ class Pokemon {
     for (var type in _types) {
       types.add(PokemonType(type['type']['name'], type['slot']));
     }
+    //if the pokemon has only one type
+    if (types.length == 1) {
+      types.add(PokemonType('null', 2));
+    }
     types.sort((a, b) => a.order.compareTo(b.order));
   }
 
@@ -76,10 +85,11 @@ class Pokemon {
     }
   }
 
-  /// Same as `_buildTypes` but for moves. 
+  /// Same as `_buildTypes` but for moves.
   void _buildMoves() {
     for (var mv in _moves) {
-      moves.add(Move(Tools.capitalizeFirst(mv['move']['name']), mv['move']['url']));
+      moves.add(
+          Move(Tools.capitalizeFirst(mv['move']['name']), mv['move']['url']));
     }
   }
 
@@ -97,24 +107,38 @@ class Pokemon {
   /// Returns the Container widget corresponding to the desired Pokemon type for
   /// this Pokemon (0 or 1).
   /// Only for displaying in the list view.
-  Widget getType(int index) {
+  Widget getTypeWidget(int index) {
     if (index < 0 || index > 1) {
       index = 0; //by default to avoid any error...
     }
+    return types[index].getWidget();
+  }
 
-    return Container(
-      margin: const EdgeInsets.all(2.0),
-      child: Center(
-        child: Text(
-          '${types[index].name.toUpperCase()}',
-          style: _typeTextStyle,
+  /// Returns the ListTile widget corresponding to the Pokemon for PokedexView
+  /// and FavouritesView.
+  Widget getListTile() {
+    return ListTile(
+      leading: Image.network(
+        spriteURL,
+        width: 52.0,
+        height: 52.0,
+      ),
+      title: Text(Tools.capitalizeFirst(this.name)),
+      subtitle: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          this.getTypeWidget(0),
+          this.getTypeWidget(1),
+        ],
+      ),
+      trailing: Text(
+        Tools.displayWithZeroes(pokedexID),
+        textAlign: TextAlign.right,
+        style: TextStyle(
+          fontSize: 13.0,
+          color: Colors.grey.shade700,
         ),
       ),
-      width: 53,
-      height: 15.75,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-          color: types[index].color),
     );
   }
 }

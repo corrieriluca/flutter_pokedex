@@ -18,6 +18,8 @@ class PokemonType {
   /// Map (Dictionary) associating colors to the different Pokemon types
   /// available.
   static final Map<String, Color> typeColorCorrespondance = {
+    //'null' type when the pokemon has only one type
+    'null': Color.fromARGB(0, 0, 0, 0),
     'grass': Color.fromARGB(255, 104, 193, 63),
     'poison': Color.fromARGB(255, 140, 40, 142),
     'fire': Color.fromARGB(255, 234, 107, 37),
@@ -37,4 +39,25 @@ class PokemonType {
     'steel': Color.fromARGB(255, 170, 168, 197),
     'fairy': Color.fromARGB(255, 231, 132, 156)
   };
+
+  /// Returns the widget containing the type name with its color in order to be
+  /// displayed in the Pokedex List View or Favourites List View
+  Widget getWidget() {
+    return Container(
+      margin: const EdgeInsets.all(2.0),
+      child: Center(
+        child: Text(
+          '${this.name.toUpperCase()}',
+          style: name != 'null'
+              ? TextStyle(fontSize: 10.0, color: Colors.white)
+              : TextStyle(fontSize: 10.0, color: Color.fromARGB(0, 0, 0, 0)),
+        ),
+      ),
+      width: 53,
+      height: 15.75,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          color: this.color),
+    );
+  }
 }
