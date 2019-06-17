@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 
 class PokemonType {
   final String name;
+  final int order;
   Color color;
 
-  PokemonType(this.name) {
+  PokemonType(this.name, this.order) {
     if (name == null) {
       throw ArgumentError('name of PokemonType cannot be null'
           'Received : "$name"');
@@ -14,8 +15,8 @@ class PokemonType {
     color = typeColorCorrespondance[name];
   }
 
-  ///Map (Dictionary) associating colors to the different Pokemon types
-  ///available.
+  /// Map (Dictionary) associating colors to the different Pokemon types
+  /// available.
   static final Map<String, Color> typeColorCorrespondance = {
     'grass': Color.fromARGB(255, 104, 193, 63),
     'poison': Color.fromARGB(255, 140, 40, 142),
