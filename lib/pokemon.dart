@@ -123,7 +123,13 @@ class Pokemon {
         width: 52.0,
         height: 52.0,
       ),
-      title: Text(Tools.capitalizeFirst(this.name)),
+      title: Text(
+        Tools.capitalizeFirst(this.name),
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 16.0
+        ),
+      ),
       subtitle: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
@@ -135,7 +141,7 @@ class Pokemon {
         Tools.displayWithZeroes(pokedexID),
         textAlign: TextAlign.right,
         style: TextStyle(
-          fontSize: 13.0,
+          fontSize: 12.0,
           color: Colors.grey.shade700,
         ),
       ),
