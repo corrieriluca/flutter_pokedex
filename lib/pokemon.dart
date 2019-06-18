@@ -101,9 +101,6 @@ class Pokemon {
     stats = stats.reversed.toList();
   }
 
-  final TextStyle _typeTextStyle =
-      TextStyle(fontSize: 10.0, color: Colors.white);
-
   /// Returns the Container widget corresponding to the desired Pokemon type for
   /// this Pokemon (0 or 1).
   /// Only for displaying in the list view.

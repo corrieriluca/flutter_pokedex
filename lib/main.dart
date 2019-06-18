@@ -1,19 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'settingsview.dart';
 import 'pokedexview.dart';
 import 'favouritesview.dart';
 
 void main() => runApp(PokedexApp());
 
 class PokedexApp extends StatelessWidget {
+  static final ThemeData defaultTheme = ThemeData(
+    primaryColor: Colors.red.shade800,
+    accentColor: Colors.white,
+  );
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Pokédex',
-      theme: ThemeData(
-        primaryColor: Colors.red.shade800,
-        accentColor: Colors.white,
-      ),
+      theme: defaultTheme,
       home: DefaultTabController(
         length: 2,
         child: MainView(),
@@ -24,8 +27,6 @@ class PokedexApp extends StatelessWidget {
 
 class MainView extends StatelessWidget {
   void _searchPokemon() {}
-
-  void _settings() {}
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +40,10 @@ class MainView extends StatelessWidget {
             ),
             IconButton(
               icon: Icon(Icons.settings),
-              onPressed: _settings,
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SettingsView()));
+              },
             ),
           ],
           bottom: TabBar(

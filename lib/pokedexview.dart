@@ -34,7 +34,7 @@ class PokedexViewState extends State<PokedexView>
     }
   }
 
-  /// Called at the starting of the app
+  /// Called at the starting of the app (when the widget is loaded in the tree)
   @override
   void initState() {
     super.initState();
@@ -55,7 +55,13 @@ class PokedexViewState extends State<PokedexView>
     return ListView.builder(
       itemCount: _pokemons.length * 2,
       itemBuilder: (BuildContext context, int pos) {
-        if (pos.isOdd) return Divider();
+        if (pos.isOdd) {
+          return Padding(
+            padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
+            child: Divider(),
+          );
+        }
+
         final index = pos ~/ 2;
         return _buildRow(index);
       },
