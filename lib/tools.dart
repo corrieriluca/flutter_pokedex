@@ -1,5 +1,3 @@
-import 'package:http/http.dart' as http;
-
 class Tools {
   /// Returns the input with the first letter capitalized.
   static String capitalizeFirst(String input) {

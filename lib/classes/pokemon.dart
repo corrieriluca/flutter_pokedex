@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pokedex/views/pokedexentryview.dart';
+import '../tools.dart';
 import 'pokemontype.dart';
 import 'move.dart';
 import 'evolutionchain.dart';
-import 'tools.dart';
 import 'package:http/http.dart' as http;
 
 class Pokemon {
@@ -23,7 +24,6 @@ class Pokemon {
   List<String> abilities = <String>[];
   List<Move> moves = <Move>[];
   List<int> stats = <int>[];
-
 
   Pokemon(
       this.name,
@@ -109,5 +109,54 @@ class Pokemon {
       index = 0; //by default to avoid any error...
     }
     return types[index].getWidget();
+  }
+}
+
+/// This class represents the ListTile widget of a Pokemon, for displaying in
+/// the PokedexView and in the FavouritesView.
+class PokemonTile extends StatelessWidget {
+  final Pokemon pokemon;
+
+  PokemonTile({Key key, @required this.pokemon}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Hero(
+        tag: '${pokemon.name}_sprite',
+        child: Image.network(
+          pokemon.spriteURL,
+          width: 52.0,
+          height: 52.0,
+        ),
+      ),
+      title: Text(
+        Tools.capitalizeFirst(pokemon.name),
+        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0),
+      ),
+      subtitle: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          pokemon.getTypeWidget(0),
+          pokemon.getTypeWidget(1),
+        ],
+      ),
+      trailing: Text(
+        Tools.displayWithZeroes(pokemon.pokedexID),
+        textAlign: TextAlign.right,
+        style: TextStyle(
+          fontSize: 12.0,
+          color: Colors.grey.shade700,
+        ),
+      ),
+      onTap: () {
+        // Builds the Pokedex Entry View according to that Pokemon.
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PokedexEntryView(pokemon: pokemon),
+            ));
+      },
+    );
   }
 }

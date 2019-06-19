@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pokedex/pokedexentryview.dart';
-import 'package:flutter_pokedex/pokemon.dart';
-import 'package:flutter_pokedex/pokemontype.dart';
 import "package:http/http.dart" as http;
-import 'tools.dart';
+
+import '../classes/pokemon.dart';
 
 class PokedexView extends StatefulWidget {
   @override
@@ -49,43 +47,8 @@ class PokedexViewState extends State<PokedexView>
     final Pokemon current = _pokemons[i];
     return Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ListTile(
-          leading: Hero(
-            tag: '${current.name}_sprite',
-            child: Image.network(
-              current.spriteURL,
-              width: 52.0,
-              height: 52.0,
-            ),
-          ),
-          title: Text(
-            Tools.capitalizeFirst(current.name),
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0),
-          ),
-          subtitle: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              current.getTypeWidget(0),
-              current.getTypeWidget(1),
-            ],
-          ),
-          trailing: Text(
-            Tools.displayWithZeroes(current.pokedexID),
-            textAlign: TextAlign.right,
-            style: TextStyle(
-              fontSize: 12.0,
-              color: Colors.grey.shade700,
-            ),
-          ),
-          onTap: () {
-            // Builds the Pokedex Entry View according to that Pokemon.
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PokedexEntryView(pokemon: current),
-                ));
-          },
-        ));
+        child: PokemonTile(pokemon: current),
+      );
   }
 
   @override

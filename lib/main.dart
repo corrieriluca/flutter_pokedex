@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'settingsview.dart';
-import 'pokedexview.dart';
-import 'favouritesview.dart';
+
+import 'views/favouritesview.dart';
+import 'views/pokedexview.dart';
+import 'views/settingsview.dart';
 
 void main() => runApp(PokedexApp());
 

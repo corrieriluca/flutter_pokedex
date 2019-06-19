@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pokedex/tools.dart';
-import 'pokemon.dart';
-import 'pokemontype.dart';
-import "package:http/http.dart" as http;
+
+import '../classes/pokemon.dart';
+import '../tools.dart';
 
 class PokedexEntryView extends StatelessWidget {
   final Pokemon pokemon;
@@ -30,6 +29,8 @@ class PokedexEntryView extends StatelessWidget {
   }
 }
 
+/// This represents the Favourite FAB (Floating Action Button) for displaying
+/// in the PokedexEntryView.
 class FavouriteButton extends StatefulWidget {
   @override
   createState() => FavouriteState();
