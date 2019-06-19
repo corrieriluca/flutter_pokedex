@@ -52,6 +52,7 @@ class PokedexViewState extends State<PokedexView>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context); //needed by AutomaticKeepAliveClientMixin
     return ListView.builder(
       itemCount: _pokemons.length * 2,
       itemBuilder: (BuildContext context, int pos) {
