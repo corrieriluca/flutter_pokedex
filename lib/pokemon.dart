@@ -13,10 +13,10 @@ class Pokemon {
   final List<dynamic> _abilities;
   final int height;
   final int weight;
-  //final String description;
+  //final String description; //later...
   final int pokedexID;
   final List<dynamic> _moves;
-  //final EvolutionChain evolutionChain;
+  //final EvolutionChain evolutionChain; //later
   final List<dynamic> _stats;
 
   List<PokemonType> types = <PokemonType>[];
@@ -109,39 +109,5 @@ class Pokemon {
       index = 0; //by default to avoid any error...
     }
     return types[index].getWidget();
-  }
-
-  /// Returns the ListTile widget corresponding to the Pokemon for PokedexView
-  /// and FavouritesView.
-  Widget getListTile() {
-    return ListTile(
-      leading: Image.network(
-        spriteURL,
-        width: 52.0,
-        height: 52.0,
-      ),
-      title: Text(
-        Tools.capitalizeFirst(this.name),
-        style: TextStyle(
-          fontWeight: FontWeight.w600,
-          fontSize: 16.0
-        ),
-      ),
-      subtitle: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          this.getTypeWidget(0),
-          this.getTypeWidget(1),
-        ],
-      ),
-      trailing: Text(
-        Tools.displayWithZeroes(pokedexID),
-        textAlign: TextAlign.right,
-        style: TextStyle(
-          fontSize: 12.0,
-          color: Colors.grey.shade700,
-        ),
-      ),
-    );
   }
 }
