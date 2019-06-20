@@ -14,7 +14,6 @@ class PokedexView extends StatefulWidget {
 
 class PokedexViewState extends State<PokedexView>
     with AutomaticKeepAliveClientMixin<PokedexView> {
-
   Database _db;
   bool _initialized = false;
   var _pokemons = <Pokemon>[];
@@ -24,6 +23,7 @@ class PokedexViewState extends State<PokedexView>
     // Construct a file path to copy database to
     String path = join(await getDatabasesPath(), "pokemonDatabase.db");
 
+    /* TO UNCOMMENT ONCE THE DATABASE IS COMPLETELY DONE AND WON'T CHANGE
     // Only copy if the database doesn't exist
     if (FileSystemEntity.typeSync(path) == FileSystemEntityType.notFound) {
       ByteData data =
@@ -34,6 +34,16 @@ class PokedexViewState extends State<PokedexView>
       // Save copied asset to documents
       await new File(path).writeAsBytes(bytes);
     }
+    */
+    
+    /* TO COMMENT ONCE THE DATA IS COMPLETELY DONE */
+    // Retrieves the database from the assets...
+    ByteData data = await rootBundle.load(join('assets', 'pokemonDatabase.db'));
+    List<int> bytes =
+        data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+
+    // ...and copy it (at each launch) into the device's storage
+    await new File(path).writeAsBytes(bytes);
   }
 
   _connectToDatabase() async {

@@ -172,6 +172,8 @@ def getDescAndEvolution(pokeID):
         if entry["language"]["name"] == "en":
             description = entry["flavor_text"]
             break
+    
+    description = description.replace('\n', ' ')
 
     r = requests.get(jsonFile["evolution_chain"]["url"])
     jsonFile = r.json()
