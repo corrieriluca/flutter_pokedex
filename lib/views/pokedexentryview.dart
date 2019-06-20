@@ -11,15 +11,24 @@ class PokedexEntryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool _debugFavourite = false;
     return Scaffold(
       appBar: AppBar(
         title: Text(Tools.capitalizeFirst(pokemon.name)),
       ),
-      body: Center(
-        child: Hero(
-            tag: '${pokemon.name}_sprite',
-            child: Image.asset('assets/pokemonSprites/${pokemon.pokedexID}.png')),
+      body: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Hero(
+                tag: '${pokemon.name}_sprite',
+                child: Image.asset(
+                    'assets/pokemonSprites/${pokemon.pokedexID}.png')),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(pokemon.description),
+          )
+        ],
       ),
       floatingActionButton: FavouriteButton(),
     );

@@ -1,12 +1,18 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'pokemon.dart';
-
 /// Class which represents an evolution chain identified with its unique ID and
 /// its members.
 class EvolutionChain {
-  final int id;
-  final List<Pokemon> members;
+  final List<String> members;
 
-  EvolutionChain(this.id, this.members);
+  EvolutionChain(String input) : members = _buildMembers(input);
+
+  static List<String> _buildMembers(String input) {
+    var _members = input.split(";");
+    var res = <String>[];
+    for (var pokemon in _members) {
+      if (pokemon != '') {
+        res.add(pokemon);
+      }
+    }
+    return res;
+  }
 }

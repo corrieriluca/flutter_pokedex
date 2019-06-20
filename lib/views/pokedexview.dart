@@ -14,25 +14,6 @@ class PokedexView extends StatefulWidget {
 
 class PokedexViewState extends State<PokedexView>
     with AutomaticKeepAliveClientMixin<PokedexView> {
-  /*
-  var _pokemons = <Pokemon>[];
-  final int _pokeNumber = 20;
-
-  /// Loads the data from the PokeAPI
-  _loadData() async {
-    for (int i = 1; i <= _pokeNumber; i++) {
-      String pokeURL = "https://pokeapi.co/api/v2/pokemon/$i/";
-      http.Response response = await http.get(pokeURL);
-      final pokemonJSON = await jsonDecode(response.body);
-      final Pokemon pokemon = Pokemon.fromJson(pokemonJSON);
-      if (mounted) {
-        setState(() {
-          _pokemons.add(pokemon);
-        });
-      }
-    }
-  }
-  */
 
   Database _db;
   bool _initialized = false;

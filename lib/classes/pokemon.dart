@@ -14,7 +14,7 @@ class Pokemon {
   final int weight;
   final String description;
   final int pokedexID;
-  final String evolutionChain;
+  final EvolutionChain evolutionChain;
 
   final List<PokemonType> types;
   final List<String> abilities;
@@ -31,7 +31,7 @@ class Pokemon {
         description = map['description'],
         height = map['height'],
         weight = map['weight'],
-        evolutionChain = map['evolution_chain'];
+        evolutionChain = EvolutionChain(map['evolution_chain']);
 
   /// Builds a List of PokemonTypes from the `types` column in the database.
   static List<PokemonType> _buildTypes(String input) {
