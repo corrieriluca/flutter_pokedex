@@ -18,11 +18,8 @@ class PokedexEntryView extends StatelessWidget {
       ),
       body: Center(
         child: Hero(
-          tag: '${pokemon.name}_sprite',
-          child: Image.network(
-            pokemon.spriteURL,
-          ),
-        ),
+            tag: '${pokemon.name}_sprite',
+            child: Image.asset('assets/pokemonSprites/${pokemon.pokedexID}.png')),
       ),
       floatingActionButton: FavouriteButton(),
     );

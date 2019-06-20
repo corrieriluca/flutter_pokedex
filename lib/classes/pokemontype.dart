@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 
 class PokemonType {
   final String name;
-  final int order;
   Color color;
 
-  PokemonType(this.name, this.order) {
+  PokemonType(this.name) {
     if (name == null) {
       throw ArgumentError('name of PokemonType cannot be null'
           'Received : "$name"');

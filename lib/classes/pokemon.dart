@@ -5,100 +5,83 @@ import '../tools.dart';
 import 'pokemontype.dart';
 import 'move.dart';
 import 'evolutionchain.dart';
-import 'package:http/http.dart' as http;
 
 class Pokemon {
   final String name;
-  final String spriteURL;
-  final List<dynamic> _types;
-  final List<dynamic> _abilities;
+  //final String spriteURL;
+
   final int height;
   final int weight;
-  //final String description; //later...
+  final String description;
   final int pokedexID;
-  final List<dynamic> _moves;
-  //final EvolutionChain evolutionChain; //later
-  final List<dynamic> _stats;
+  final String evolutionChain;
 
-  List<PokemonType> types = <PokemonType>[];
-  List<String> abilities = <String>[];
-  List<Move> moves = <Move>[];
-  List<int> stats = <int>[];
+  final List<PokemonType> types;
+  final List<String> abilities;
+  final List<Move> moves;
+  final List<int> stats;
 
-  Pokemon(
-      this.name,
-      this.spriteURL,
-      this.types,
-      this.abilities,
-      this.height,
-      this.weight,
-      this.pokedexID,
-      this.moves,
-      this.stats,
-      this._types,
-      this._abilities,
-      this._moves,
-      this._stats) {
-    _buildProperties();
-  }
+  Pokemon.fromDB(Map<String, dynamic> map)
+      : name = Tools.capitalizeFirst(map['name']),
+        pokedexID = map['id'],
+        types = _buildTypes(map['types']),
+        abilities = _buildAbilities(map['abilities']),
+        moves = _buildMoves(map['moves']),
+        stats = _buildStats(map['stats']),
+        description = map['description'],
+        height = map['height'],
+        weight = map['weight'],
+        evolutionChain = map['evolution_chain'];
 
-  Pokemon.fromJson(Map<String, dynamic> json)
-      : name = json['name'],
-        spriteURL = json['sprites']['front_default'],
-        _types = json['types'],
-        _abilities = json['abilities'],
-        height = json['height'],
-        weight = json['weight'],
-        pokedexID = json['id'],
-        _moves = json['moves'],
-        _stats = json['stats'] {
-    _buildProperties();
-  }
-
-  String formatName() => Tools.capitalizeFirst(name);
-
-  /// Calls different functions which all initialize some properties...
-  void _buildProperties() {
-    _buildTypes();
-    _buildAbilities();
-    _buildMoves();
-    _buildStats();
-  }
-
-  /// Fills the `types` list with PokemonType objects based on the `_types`list.
-  /// Sorts the list by the type order. Called in `_buildProperties`.
-  void _buildTypes() {
-    for (var type in _types) {
-      types.add(PokemonType(type['type']['name'], type['slot']));
+  /// Builds a List of PokemonTypes from the `types` column in the database.
+  static List<PokemonType> _buildTypes(String input) {
+    var typesDivided = input.split(";");
+    var res = <PokemonType>[];
+    for (var type in typesDivided) {
+      if (type != '') {
+        res.add(PokemonType(type));
+      }
     }
-    //if the pokemon has only one type
-    if (types.length == 1) {
-      types.add(PokemonType('null', 2));
+    if (res.length == 1) {
+      res.add(PokemonType('null'));
     }
-    types.sort((a, b) => a.order.compareTo(b.order));
+    return res;
   }
 
   /// Same as `_buildTypes` but for abilities.
-  void _buildAbilities() {
-    for (var abi in _abilities) {
-      abilities.add(Tools.capitalizeFirst(abi['ability']['name']));
+  static List<String> _buildAbilities(String input) {
+    var abilitiesDivided = input.split(";");
+    var res = <String>[];
+    for (var ability in abilitiesDivided) {
+      if (ability != '') {
+        res.add(Tools.capitalizeFirst(ability));
+      }
     }
+    return res;
   }
 
   /// Same as `_buildTypes` but for moves.
-  void _buildMoves() {
-    for (var mv in _moves) {
-      moves.add(
-          Move(Tools.capitalizeFirst(mv['move']['name']), mv['move']['url']));
+  static List<Move> _buildMoves(String input) {
+    var movesDivided = input.split(";");
+    var res = <Move>[];
+    for (var move in movesDivided) {
+      if (move != '') {
+        res.add(Move(move));
+      }
     }
+    return res;
   }
 
   /// Same as `_buildTypes` but for stats.
-  void _buildStats() {
-    for (var stat in _stats) {
-      stats.add(stat['base_stat']);
+  static List<int> _buildStats(String input) {
+    var statsDivided = input.split(";");
+    var res = <int>[];
+    for (var stat in statsDivided) {
+      if (stat != '') {
+        res.add(int.parse(stat));
+      }
     }
-    stats = stats.reversed.toList();
+    return res;
   }
 
   /// Returns the Container widget corresponding to the desired Pokemon type for
@@ -124,8 +107,8 @@ class PokemonTile extends StatelessWidget {
     return ListTile(
       leading: Hero(
         tag: '${pokemon.name}_sprite',
-        child: Image.network(
-          pokemon.spriteURL,
+        child: Image.asset(
+          'assets/pokemonSprites/${pokemon.pokedexID}.png',
           width: 52.0,
           height: 52.0,
         ),

@@ -1,7 +1,9 @@
-import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import "package:http/http.dart" as http;
+import 'package:flutter/services.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 import '../classes/pokemon.dart';
 
@@ -12,12 +14,9 @@ class PokedexView extends StatefulWidget {
 
 class PokedexViewState extends State<PokedexView>
     with AutomaticKeepAliveClientMixin<PokedexView> {
+  /*
   var _pokemons = <Pokemon>[];
   final int _pokeNumber = 20;
-
-  /// For keeping alive this state even if it is not the current tab
-  @override
-  bool get wantKeepAlive => true;
 
   /// Loads the data from the PokeAPI
   _loadData() async {
@@ -33,6 +32,51 @@ class PokedexViewState extends State<PokedexView>
       }
     }
   }
+  */
+
+  Database _db;
+  bool _initialized = false;
+  var _pokemons = <Pokemon>[];
+
+  /// Copy the database from the assets to the device in order to access it later.
+  _initializeDB() async {
+    // Construct a file path to copy database to
+    String path = join(await getDatabasesPath(), "pokemonDatabase.db");
+
+    // Only copy if the database doesn't exist
+    if (FileSystemEntity.typeSync(path) == FileSystemEntityType.notFound) {
+      ByteData data =
+          await rootBundle.load(join('assets', 'pokemonDatabase.db'));
+      List<int> bytes =
+          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+
+      // Save copied asset to documents
+      await new File(path).writeAsBytes(bytes);
+    }
+  }
+
+  _connectToDatabase() async {
+    _initializeDB();
+    String databasePath = join(await getDatabasesPath(), 'pokemonDatabase.db');
+    this._db = await openDatabase(databasePath);
+    this._initialized = true;
+  }
+
+  _loadData() async {
+    if (!_initialized) await _connectToDatabase();
+    final List<Map<String, dynamic>> pokemonMaps = await _db.query('POKEMONS');
+    if (mounted) {
+      setState(() {
+        _pokemons = List.generate(pokemonMaps.length, (i) {
+          return Pokemon.fromDB(pokemonMaps[i]);
+        });
+      });
+    }
+  }
+
+  /// For keeping alive this state even if it is not the current tab
+  @override
+  bool get wantKeepAlive => true;
 
   /// Called at the starting of the app (when the widget is loaded in the tree)
   @override
@@ -46,9 +90,9 @@ class PokedexViewState extends State<PokedexView>
   Widget _buildRow(int i) {
     final Pokemon current = _pokemons[i];
     return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: PokemonTile(pokemon: current),
-      );
+      padding: const EdgeInsets.all(8.0),
+      child: PokemonTile(pokemon: current),
+    );
   }
 
   @override
