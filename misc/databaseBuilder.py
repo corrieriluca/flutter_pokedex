@@ -24,7 +24,7 @@ def create_connection(db_file):
 
 def initDB(conn):
     """
-    initializes the database, creating the first Pokemon table
+    initializes the database, creating the POKEMONS and the MOVES tables
     """
     print("Initializing database...")
     conn.execute('''CREATE TABLE POKEMONS 
@@ -38,16 +38,53 @@ def initDB(conn):
         stats TEXT NOT NULL,
         description TEXT NOT NULL,
         evolution_chain TEXT NOT NULL);''')
-    print("Table Pokemon created successfully")
+    print("Table Pokemon successfully created")
+    
+    conn.execute('''CREATE TABLE MOVES
+        (id INT PRIMARY KEY NOT NULL,
+        name TEXT NOT NULL,
+        type TEXT NOT NULL);''')
+    print("Table Moves successfully created")
 
 
-def loadData(conn):
+def loadMoves(conn):
+    """
+    loads the moves from the PokeAPI and fills the Moves table accordingly
+    """
+    moveNumber = 20 # default is 746
+    print("MOVE : Loading data for {0} moves...".format(moveNumber))
+    url = "https://pokeapi.co/api/v2/move/?offset=0&limit={0}".format(moveNumber)
+    r = requests.get(url)
+    movesJSON = r.json()
+    for move in movesJSON["results"]:
+        addMove(conn, move)
+
+
+def addMove(conn, move):
+    """
+    adds the move to the database from the given URL
+    """
+    r = requests.get(move["url"])
+    moveJSON = r.json()
+
+    moveID = moveJSON["id"]
+    name = moveJSON["name"]
+    moveType = moveJSON["type"]["name"]
+
+    command = "INSERT INTO MOVES (id, name, type) VALUES({0}, '{1}', '{2}')".format(moveID, name, moveType)
+    conn.execute(command)
+    conn.commit()
+    print("MOVE : {0} successfully added".format(name))
+
+
+
+def loadPokemons(conn):
     """
     Fetches the JSON files from the PokeAPI and fills the Pokemon table
     accordingly
     """
     pokemonNumber = 20
-    print("Loading data for {0} pokemons...".format(pokemonNumber))
+    print("POKEMON : Loading data for {0} pokemons...".format(pokemonNumber))
     for i in range(1, pokemonNumber + 1):
         url = "https://pokeapi.co/api/v2/pokemon/{0}/".format(i)
         r = requests.get(url)
@@ -59,7 +96,7 @@ def addPokemon(conn, jsonPokemon):
     """
     add the pokemon from the json into the database
     """
-    print("Adding {0} into the database".format(jsonPokemon["name"]))
+    print("POKEMON : Adding {0} into the database".format(jsonPokemon["name"]))
 
     pokeID = jsonPokemon["id"]
     name = jsonPokemon["name"]
@@ -76,7 +113,7 @@ def addPokemon(conn, jsonPokemon):
     
     conn.execute(command)
     conn.commit()
-    print("{0} successfully added to the database".format(name))
+    print("POKEMON : {0} successfully inserted into the database".format(name))
 
 
 def formatTypes(types):
@@ -161,7 +198,8 @@ def main():
     conn = create_connection(database)
     with conn:
         initDB(conn)
-        loadData(conn)
+        loadPokemons(conn)
+        loadMoves(conn)
     
     conn.close()
     print("End.")
