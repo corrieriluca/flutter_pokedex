@@ -36,7 +36,7 @@ class PokedexViewState extends State<PokedexView>
     }
     */
     
-    /* TO COMMENT ONCE THE DATA IS COMPLETELY DONE */
+    /* TO COMMENT ONCE THE DATABASE IS COMPLETELY DONE */
     // Retrieves the database from the assets...
     ByteData data = await rootBundle.load(join('assets', 'pokemonDatabase.db'));
     List<int> bytes =

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import '../classes/pokemon.dart';
-import '../tools.dart';
 
 class PokedexEntryView extends StatelessWidget {
   final Pokemon pokemon;
@@ -12,22 +12,61 @@ class PokedexEntryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(Tools.capitalizeFirst(pokemon.name)),
-      ),
-      body: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Hero(
-                tag: '${pokemon.name}_sprite',
-                child: Image.asset(
-                    'assets/pokemonSprites/${pokemon.pokedexID}.png')),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            title: Text('${pokemon.name}'),
+            floating: true,
+            snap: true,
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(pokemon.description),
-          )
+          SliverList(
+            delegate: SliverChildListDelegate([
+              Card(
+                  margin: EdgeInsets.all(16.0),
+                  elevation: 6.0,
+                  child: Row(
+                    //mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Hero(
+                          tag: '${pokemon.name}_sprite',
+                          child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Image.asset(
+                                'assets/pokemonSprites/${pokemon.pokedexID}.png',
+                                fit: BoxFit.fill,
+                              ))),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text('${pokemon.name}',
+                                  style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.w600))),
+                          Text(
+                            'Height : ${pokemon.height}',
+                            style: TextStyle(
+                                fontSize: 12.0, color: Colors.grey.shade700),
+                          ),
+                          Text(
+                            'Weight : ${pokemon.weight}',
+                            style: TextStyle(
+                                fontSize: 12.0, color: Colors.grey.shade700),
+                          ),
+                        ],
+                      )
+                    ],
+                  )),
+              Card(
+                  margin: EdgeInsets.all(16.0),
+                  elevation: 6.0,
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text('${pokemon.description}'),
+                  ))
+            ]),
+          ),
         ],
       ),
       floatingActionButton: FavouriteButton(),
