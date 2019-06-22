@@ -51,7 +51,7 @@ def loadMoves(conn):
     """
     loads the moves from the PokeAPI and fills the Moves table accordingly
     """
-    moveNumber = 20 # default is 746
+    moveNumber = 100 # default is 746
     print("MOVE : Loading data for {0} moves...".format(moveNumber))
     url = "https://pokeapi.co/api/v2/move/?offset=0&limit={0}".format(moveNumber)
     r = requests.get(url)

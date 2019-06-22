@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+import '../classes/move.dart';
 import '../classes/pokemon.dart';
 
 class PokedexView extends StatefulWidget {
@@ -17,6 +18,7 @@ class PokedexViewState extends State<PokedexView>
   Database _db;
   bool _initialized = false;
   var _pokemons = <Pokemon>[];
+  static var pokemonMoves = <Move>[];
 
   /// Copy the database from the assets to the device in order to access it later.
   _initializeDB() async {
@@ -56,11 +58,15 @@ class PokedexViewState extends State<PokedexView>
   _loadData() async {
     if (!_initialized) await _connectToDatabase();
     final List<Map<String, dynamic>> pokemonMaps = await _db.query('POKEMONS');
+    final List<Map<String, dynamic>> pokemonMovesMap = await _db.query('MOVES');
     if (mounted) {
       setState(() {
         _pokemons = List.generate(pokemonMaps.length, (i) {
           return Pokemon.fromDB(pokemonMaps[i]);
         });
+      });
+      pokemonMoves = List.generate(pokemonMovesMap.length, (i) {
+        return Move.fromDB(pokemonMovesMap[i]);
       });
     }
   }
@@ -80,8 +86,8 @@ class PokedexViewState extends State<PokedexView>
   /// Calls `getListTile()` for each Pokemon.
   Widget _buildRow(int i) {
     final Pokemon current = _pokemons[i];
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    return Container(
+      margin: const EdgeInsets.all(8.0),
       child: PokemonTile(pokemon: current),
     );
   }

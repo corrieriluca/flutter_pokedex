@@ -18,7 +18,7 @@ class Pokemon {
 
   final List<PokemonType> types;
   final List<String> abilities;
-  final List<Move> moves;
+  final List<String> moves;
   final List<int> stats;
 
   Pokemon.fromDB(Map<String, dynamic> map)
@@ -61,12 +61,12 @@ class Pokemon {
   }
 
   /// Same as `_buildTypes` but for moves.
-  static List<Move> _buildMoves(String input) {
+  static List<String> _buildMoves(String input) {
     var movesDivided = input.split(";");
-    var res = <Move>[];
+    var res = <String>[];
     for (var move in movesDivided) {
       if (move != '') {
-        res.add(Move(move));
+        res.add(move);
       }
     }
     return res;
