@@ -19,24 +19,27 @@ class PokedexEntryView extends StatelessWidget {
         slivers: <Widget>[
           SliverAppBar(
             title: Text('${pokemon.name}'),
-            floating: true,
-            snap: true,
+            pinned: true,
           ),
           SliverList(
               delegate: SliverChildListDelegate([
             _PokemonBaseContainer(pokemon: pokemon),
             Padding(
-              padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
+              padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
               child: Divider(color: Colors.black38),
             ),
             _PokemonDescriptionContainer(pokemon: pokemon),
             Padding(
-              padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
+              padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+              child: Divider(color: Colors.black38),
+            ),
+            _PokemonStatsView(pokemon: pokemon),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
               child: Divider(color: Colors.black38),
             ),
             Container(
               margin: EdgeInsets.fromLTRB(16, 8, 16, 8),
-              padding: EdgeInsets.all(8.0),
               child: Container(
                 alignment: Alignment.centerLeft,
                 child: Text('Moves',
@@ -139,7 +142,6 @@ class _PokemonDescriptionContainer extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         margin: EdgeInsets.fromLTRB(16, 8, 16, 8),
         child: Container(
-          padding: EdgeInsets.all(8.0),
           child: Column(
             children: <Widget>[
               Container(
@@ -161,6 +163,31 @@ class _PokemonDescriptionContainer extends StatelessWidget {
       );
 }
 
+class _PokemonStatsView extends StatelessWidget {
+  final Pokemon pokemon;
+
+  const _PokemonStatsView({Key key, @required this.pokemon}) : super(key: key);
+
+  Widget build(BuildContext context) => Container(
+        margin: EdgeInsets.fromLTRB(16, 8, 16, 8),
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              Container(
+                alignment: Alignment.centerLeft,
+                child: Text('Base Stats',
+                    style:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600)),
+                margin: EdgeInsets.all(4.0),
+              ),
+              pokemon.getStatWidgets(),
+            ],
+          ),
+        ),
+      );
+}
+
+/// Idem for the displaying the Pokemon Moves
 class _PokemonMoveListView extends StatelessWidget {
   final Pokemon pokemon;
 
@@ -181,19 +208,19 @@ class _PokemonMoveListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SliverList(
-    delegate: SliverChildBuilderDelegate(
-      (BuildContext context, int pos) {
-        if (pos.isOdd) {
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
-            child: Divider(),
-          );
-        }
-        final index = pos ~/ 2;
-        return _buildRow(index);
-      },
-      childCount: pokemon.moves.length * 2,
-    ));
+          delegate: SliverChildBuilderDelegate(
+        (BuildContext context, int pos) {
+          if (pos.isOdd) {
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
+              child: Divider(),
+            );
+          }
+          final index = pos ~/ 2;
+          return _buildRow(index);
+        },
+        childCount: pokemon.moves.length * 2,
+      ));
 }
 
 /// This represents the Favourite FAB (Floating Action Button) for displaying

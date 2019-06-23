@@ -83,7 +83,7 @@ def loadPokemons(conn):
     Fetches the JSON files from the PokeAPI and fills the Pokemon table
     accordingly
     """
-    pokemonNumber = 20
+    pokemonNumber = 75
     print("POKEMON : Loading data for {0} pokemons...".format(pokemonNumber))
     for i in range(1, pokemonNumber + 1):
         url = "https://pokeapi.co/api/v2/pokemon/{0}/".format(i)
@@ -141,7 +141,7 @@ def formatMoves(moves):
     same as formatTypes but for moves
     """
     res = ""
-    for i in range (len(moves) - 1, -1, -1):
+    for i in range (0, len(moves)):
         res += moves[i]["move"]["name"] + ";"
     return res
 

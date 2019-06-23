@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/views/pokedexentryview.dart';
 import '../tools.dart';
 import 'pokemontype.dart';
-import 'move.dart';
 import 'evolutionchain.dart';
 
 class Pokemon {
   final String name;
-  //final String spriteURL;
 
   final int height;
   final int weight;
@@ -19,6 +17,8 @@ class Pokemon {
   final List<PokemonType> types;
   final List<String> abilities;
   final List<String> moves;
+
+  /// Stats : HP, Atk, Def, SpAtk, SpDef, Speed
   final List<int> stats;
 
   Pokemon.fromDB(Map<String, dynamic> map)
@@ -92,6 +92,97 @@ class Pokemon {
       index = 0; //by default to avoid any error...
     }
     return types[index].getWidget();
+  }
+
+  /// Returns the Stat Bar color for the given stat.
+  Color _getStatColor(int index) {
+    if (stats[index] <= 60) {
+      return Color(0xFFFF1800);
+    } else if (stats[index] <= 110) {
+      return Color(0xFFFFCC00);
+    } else {
+      return Colors.green.shade500;
+    }
+  }
+
+  /// Returns the name of the given stat index
+  String _getStatName(int index) {
+    switch (index) {
+      case 0:
+        return 'HP';
+      case 1:
+        return 'Attack';
+      case 2:
+        return 'Defense';
+      case 3:
+        return 'Spe. Atk';
+      case 4:
+        return 'Spe. Def';
+      case 5:
+        return 'Speed';
+      default:
+        return 'none';
+    }
+  }
+
+  /// Returns the Container widget corresponding to the desired stat for this
+  /// Pokemon (0 to 5).
+  Widget _getStatWidget(int index) {
+    return Container(
+      margin: EdgeInsets.all(4.0),
+      padding: EdgeInsets.all(4.0),
+      child: Row(children: <Widget>[
+        Container(
+          width: 65,
+          alignment: Alignment.centerRight,
+          margin: EdgeInsets.all(8.0),
+          child: Text(
+            '${this._getStatName(index)} :',
+            style: TextStyle(
+              fontSize: 12.0,
+              color: Colors.grey.shade700,
+            ),
+          ),
+        ),
+        Stack(
+          children: <Widget>[
+            Container(
+              width: 270,
+              height: 30,
+              decoration: BoxDecoration(
+                  color: Colors.grey[350],
+                  borderRadius: BorderRadius.all(Radius.circular(3))),
+            ),
+            Container(
+              width: stats[index] / 255 * 270,
+              height: 30,
+              decoration: BoxDecoration(
+                  color: _getStatColor(index),
+                  borderRadius: BorderRadius.all(Radius.circular(3))),
+            ),
+            Container(
+              width: 270,
+              height: 30,
+              alignment: Alignment.center,
+              child: Text('${stats[index]}', style: TextStyle(fontWeight: FontWeight.w600),),
+            )
+          ],
+        )
+      ]),
+    );
+  }
+
+  /// Returns all the stats widgets of this Pokemon.
+  /// Only for diplaying in the PokedexEntryView.
+  Widget getStatWidgets() {
+    var _statsWidgets = <Widget>[];
+    for (int i = 0; i < 6; i++) {
+      _statsWidgets.add(_getStatWidget(i));
+    }
+
+    return Column(
+      children: _statsWidgets,
+    );
   }
 }
 

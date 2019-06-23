@@ -17,7 +17,7 @@ class PokedexViewState extends State<PokedexView>
     with AutomaticKeepAliveClientMixin<PokedexView> {
   Database _db;
   bool _initialized = false;
-  var _pokemons = <Pokemon>[];
+  static var pokemons = <Pokemon>[];
   static var pokemonMoves = <Move>[];
 
   /// Copy the database from the assets to the device in order to access it later.
@@ -61,7 +61,7 @@ class PokedexViewState extends State<PokedexView>
     final List<Map<String, dynamic>> pokemonMovesMap = await _db.query('MOVES');
     if (mounted) {
       setState(() {
-        _pokemons = List.generate(pokemonMaps.length, (i) {
+        pokemons = List.generate(pokemonMaps.length, (i) {
           return Pokemon.fromDB(pokemonMaps[i]);
         });
       });
@@ -85,7 +85,7 @@ class PokedexViewState extends State<PokedexView>
   /// ItemBuilder for the ListView widget in the `build` method below.
   /// Calls `getListTile()` for each Pokemon.
   Widget _buildRow(int i) {
-    final Pokemon current = _pokemons[i];
+    final Pokemon current = pokemons[i];
     return Container(
       margin: const EdgeInsets.all(8.0),
       child: PokemonTile(pokemon: current),
@@ -96,7 +96,7 @@ class PokedexViewState extends State<PokedexView>
   Widget build(BuildContext context) {
     super.build(context); //needed by AutomaticKeepAliveClientMixin
     return ListView.builder(
-      itemCount: _pokemons.length * 2,
+      itemCount: pokemons.length * 2,
       itemBuilder: (BuildContext context, int pos) {
         if (pos.isOdd) {
           return Padding(

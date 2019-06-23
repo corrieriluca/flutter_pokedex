@@ -11,7 +11,7 @@ class Move {
 
   //for debug
   Move(this.name)
-      : type = PokemonType('grass'),
+      : type = PokemonType('normal'),
         id = 0;
 
   Move.fromDB(Map<String, dynamic> map)
