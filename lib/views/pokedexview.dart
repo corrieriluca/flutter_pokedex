@@ -37,7 +37,7 @@ class PokedexViewState extends State<PokedexView>
       await new File(path).writeAsBytes(bytes);
     }
     */
-    
+
     /* TO COMMENT ONCE THE DATABASE IS COMPLETELY DONE */
     // Retrieves the database from the assets...
     ByteData data = await rootBundle.load(join('assets', 'pokemonDatabase.db'));
@@ -95,19 +95,20 @@ class PokedexViewState extends State<PokedexView>
   @override
   Widget build(BuildContext context) {
     super.build(context); //needed by AutomaticKeepAliveClientMixin
-    return ListView.builder(
-      itemCount: pokemons.length * 2,
-      itemBuilder: (BuildContext context, int pos) {
-        if (pos.isOdd) {
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
-            child: Divider(),
-          );
-        }
+    return CustomScrollView(slivers: <Widget>[
+      SliverList(
+        delegate: SliverChildBuilderDelegate((BuildContext context, int pos) {
+          if (pos.isOdd) {
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
+              child: Divider(),
+            );
+          }
 
-        final index = pos ~/ 2;
-        return _buildRow(index);
-      },
-    );
+          final index = pos ~/ 2;
+          return _buildRow(index);
+        }, childCount: pokemons.length * 2),
+      ),
+    ]);
   }
 }

@@ -26,40 +26,79 @@ class PokedexApp extends StatelessWidget {
   }
 }
 
-class MainView extends StatelessWidget {
+class MainView extends StatefulWidget {
+  @override
+  createState() => MainViewState();
+}
+
+class MainViewState extends State<MainView>
+    with SingleTickerProviderStateMixin {
   void _searchPokemon() {}
+
+  TabController _tabController;
+  ScrollController _scrollViewController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(vsync: this, length: 2);
+    _scrollViewController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    _scrollViewController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Pokédex'),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.search),
-              onPressed: _searchPokemon,
-            ),
-            IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SettingsView()));
-              },
-            ),
-          ],
-          bottom: TabBar(
-            isScrollable: false,
-            tabs: <Tab>[
-              Tab(text: 'POKÉMON'),
-              Tab(text: 'FAVOURITES'),
-            ],
-          ),
-        ),
+      body: NestedScrollView(
+        controller: _scrollViewController,
+        headerSliverBuilder: (BuildContext context, bool boxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              title: Text('Pokédex'),
+              pinned: true,
+              snap: true,
+              floating: true,
+              forceElevated: true,
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: _searchPokemon,
+                ),
+                IconButton(
+                  icon: Icon(Icons.settings),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SettingsView()));
+                  },
+                ),
+              ],
+              bottom: TabBar(
+                controller: _tabController,
+                isScrollable: false,
+                tabs: <Widget>[
+                  Tab(text: 'POKÉMON'),
+                  Tab(text: 'FAVOURITES'),
+                ],
+              ),
+            )
+          ];
+        },
         body: TabBarView(
           children: <Widget>[
             PokedexView(),
             FavouritesView(),
           ],
-        ));
+          controller: _tabController,
+        ),
+      ),
+    );
   }
 }

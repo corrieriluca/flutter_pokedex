@@ -15,12 +15,11 @@ class PokedexEntryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('${pokemon.name}'),
+      ),
       body: CustomScrollView(
         slivers: <Widget>[
-          SliverAppBar(
-            title: Text('${pokemon.name}'),
-            pinned: true,
-          ),
           SliverList(
               delegate: SliverChildListDelegate([
             _PokemonBaseContainer(pokemon: pokemon),
