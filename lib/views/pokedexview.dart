@@ -83,7 +83,7 @@ class PokedexViewState extends State<PokedexView>
   }
 
   /// ItemBuilder for the ListView widget in the `build` method below.
-  /// Calls `getListTile()` for each Pokemon.
+  /// Creates a PokemonTile widget for each Pokemon.
   Widget _buildRow(int i) {
     final Pokemon current = pokemons[i];
     return Container(

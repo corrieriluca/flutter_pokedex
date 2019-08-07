@@ -127,24 +127,23 @@ class Pokemon {
 
   /// Returns the Container widget corresponding to the desired stat for this
   /// Pokemon (0 to 5).
-  Widget _getStatWidget(int index) {
-    return Container(
-      margin: EdgeInsets.all(4.0),
-      padding: EdgeInsets.all(4.0),
-      child: Row(children: <Widget>[
-        Container(
-          width: 65,
-          alignment: Alignment.centerRight,
-          margin: EdgeInsets.all(8.0),
-          child: Text(
-            '${this._getStatName(index)} :',
-            style: TextStyle(
-              fontSize: 12.0,
-              color: Colors.grey.shade700,
-            ),
+  TableRow _getStatWidget(int index) {
+    return TableRow(children: <Widget>[
+      Container(
+        width: 65,
+        alignment: Alignment.centerRight,
+        padding: EdgeInsets.all(8.0),
+        child: Text(
+          '${this._getStatName(index)} :',
+          style: TextStyle(
+            fontSize: 12.0,
+            color: Colors.grey.shade700,
           ),
         ),
-        Stack(
+      ),
+      Padding(
+        padding: EdgeInsets.all(4.0),
+        child: Stack(
           children: <Widget>[
             Container(
               width: 270,
@@ -164,23 +163,27 @@ class Pokemon {
               width: 270,
               height: 30,
               alignment: Alignment.center,
-              child: Text('${stats[index]}', style: TextStyle(fontWeight: FontWeight.w600),),
+              child: Text(
+                '${stats[index]}',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
             )
           ],
-        )
-      ]),
-    );
+        ),
+      )
+    ]);
   }
 
   /// Returns all the stats widgets of this Pokemon.
   /// Only for diplaying in the PokedexEntryView.
   Widget getStatWidgets() {
-    var _statsWidgets = <Widget>[];
+    var _statsWidgets = <TableRow>[];
     for (int i = 0; i < 6; i++) {
       _statsWidgets.add(_getStatWidget(i));
     }
 
-    return Column(
+    return Table(
+      border: TableBorder.all(),
       children: _statsWidgets,
     );
   }

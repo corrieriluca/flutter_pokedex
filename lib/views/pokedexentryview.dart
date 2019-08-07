@@ -17,6 +17,7 @@ class PokedexEntryView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('${pokemon.name}'),
+        backgroundColor: pokemon.types[0].color,
       ),
       body: CustomScrollView(
         slivers: <Widget>[
@@ -51,7 +52,7 @@ class PokedexEntryView extends StatelessWidget {
           _PokemonMoveListView(pokemon: pokemon),
         ],
       ),
-      floatingActionButton: FavouriteButton(),
+      floatingActionButton: FavouriteButton(pokemon: pokemon),
     );
   }
 }
@@ -162,6 +163,7 @@ class _PokemonDescriptionContainer extends StatelessWidget {
       );
 }
 
+/// Containing the stats of the Pokemon
 class _PokemonStatsView extends StatelessWidget {
   final Pokemon pokemon;
 
@@ -225,18 +227,24 @@ class _PokemonMoveListView extends StatelessWidget {
 /// This represents the Favourite FAB (Floating Action Button) for displaying
 /// in the PokedexEntryView.
 class FavouriteButton extends StatefulWidget {
+  final Pokemon pokemon;
+  FavouriteButton({@required this.pokemon});
+  
   @override
-  createState() => FavouriteState();
+  createState() => FavouriteState(pokemon: pokemon);
 }
 
 class FavouriteState extends State<FavouriteButton> {
   bool _debugFavourite = false;
+  final Pokemon pokemon;
+
+  FavouriteState({@required this.pokemon});
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
       foregroundColor: Colors.white,
-      backgroundColor: Colors.red.shade700,
+      backgroundColor: this.pokemon.types[0].color,
       child: Icon(_debugFavourite ? Icons.favorite : Icons.favorite_border),
       onPressed: () {
         setState(() {
