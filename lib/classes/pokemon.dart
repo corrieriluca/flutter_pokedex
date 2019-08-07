@@ -183,8 +183,9 @@ class Pokemon {
     }
 
     return Table(
-      border: TableBorder.all(),
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
       children: _statsWidgets,
+      columnWidths: {0: FractionColumnWidth(0.25)},
     );
   }
 }
