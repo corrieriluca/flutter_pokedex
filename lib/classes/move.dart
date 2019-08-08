@@ -28,15 +28,17 @@ class MoveTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.fromLTRB(25, 0, 25, 0),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(
-                alignment: Alignment.centerLeft,
-                child: Text(Tools.capitalizeFirst(move.name)),
-              ),
-              move.type.getWidget(),
-            ]));
+      margin: EdgeInsets.fromLTRB(25, 0, 25, 0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Container(
+            alignment: Alignment.centerLeft,
+            child: Text(Tools.capitalizeFirst(move.name)),
+          ),
+          move.type.getWidget(),
+        ],
+      ),
+    );
   }
 }

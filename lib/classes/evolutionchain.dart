@@ -1,3 +1,5 @@
+import '../tools.dart';
+
 /// Class which represents an evolution chain identified with its unique ID and
 /// its members.
 class EvolutionChain {
@@ -10,7 +12,7 @@ class EvolutionChain {
     var res = <String>[];
     for (var pokemon in _members) {
       if (pokemon != '') {
-        res.add(pokemon);
+        res.add(Tools.capitalizeFirst(pokemon));
       }
     }
     return res;

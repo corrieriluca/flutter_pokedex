@@ -230,10 +230,11 @@ class PokemonTile extends StatelessWidget {
       onTap: () {
         // Builds the Pokedex Entry View according to that Pokemon.
         Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PokedexEntryView(pokemon: pokemon),
-            ));
+          context,
+          MaterialPageRoute(
+            builder: (context) => PokedexEntryView(pokemon: pokemon),
+          ),
+        );
       },
     );
   }

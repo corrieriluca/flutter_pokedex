@@ -38,6 +38,13 @@ class PokedexEntryView extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
               child: Divider(color: Colors.black38),
             ),
+            _PokemonEvolutionView(
+              pokemon: pokemon,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+              child: Divider(color: Colors.black38),
+            ),
             Container(
               margin: EdgeInsets.fromLTRB(16, 8, 16, 8),
               child: Container(
@@ -67,19 +74,21 @@ class _PokemonBaseContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-      margin: EdgeInsets.fromLTRB(16, 16, 16, 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Hero(
+        margin: EdgeInsets.fromLTRB(16, 16, 16, 8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Hero(
               tag: '${pokemon.name}_sprite',
               child: Container(
-                  margin: EdgeInsets.fromLTRB(14, 8, 14, 8),
-                  child: Image.asset(
-                    'assets/pokemonSprites/${pokemon.pokedexID}.png',
-                  ))),
-          Container(
+                margin: EdgeInsets.fromLTRB(14, 8, 14, 8),
+                child: Image.asset(
+                  'assets/pokemonSprites/${pokemon.pokedexID}.png',
+                ),
+              ),
+            ),
+            Container(
               margin: EdgeInsets.all(8.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -126,9 +135,11 @@ class _PokemonBaseContainer extends StatelessWidget {
                     margin: EdgeInsets.all(4.0),
                   )
                 ],
-              )),
-        ],
-      ));
+              ),
+            ),
+          ],
+        ),
+      );
 }
 
 /// Idem for the displaying the Pokemon Description
@@ -188,6 +199,86 @@ class _PokemonStatsView extends StatelessWidget {
       );
 }
 
+class _PokemonEvolutionView extends StatelessWidget {
+  final Pokemon pokemon;
+
+  const _PokemonEvolutionView({Key key, @required this.pokemon})
+      : super(key: key);
+
+  /// Retreives the Pokemon by its name and build its little thumbnail
+  Widget _buildThumbnail(BuildContext context, int i) {
+    final String pokemonName = pokemon.evolutionChain.members[i];
+    final Pokemon currentPoke =
+        PokedexViewState.pokemons.firstWhere((Pokemon poke) {
+      return poke.name == pokemonName;
+    });
+    return Container(
+      child: GestureDetector(
+        onTap: () {
+          if (currentPoke == pokemon) {
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text(
+                  'You are already looking at the page of this Pokémon...'),
+              duration: Duration(seconds: 2),
+            ));
+          } else {
+            // Builds the Pokedex Entry View according to that Pokemon.
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PokedexEntryView(pokemon: currentPoke),
+              ),
+            );
+          }
+        },
+        child: Column(
+          children: <Widget>[
+            Image.asset(
+              'assets/pokemonSprites/${currentPoke.pokedexID}.png',
+            ),
+            Container(
+              child: Text(
+                '${currentPoke.name}',
+                style: TextStyle(fontSize: 16.0),
+              ),
+              margin: EdgeInsets.all(4.0),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget build(BuildContext context) => Container(
+        margin: EdgeInsets.fromLTRB(16, 8, 16, 8),
+        child: Column(
+          children: <Widget>[
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Text('Evolution Chain',
+                  style:
+                      TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600)),
+              margin: EdgeInsets.all(4.0),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                pokemon.evolutionChain.members.length >= 1
+                    ? _buildThumbnail(context, 0)
+                    : Container(),
+                pokemon.evolutionChain.members.length >= 2
+                    ? _buildThumbnail(context, 1)
+                    : Container(),
+                pokemon.evolutionChain.members.length >= 3
+                    ? _buildThumbnail(context, 2)
+                    : Container(),
+              ],
+            )
+          ],
+        ),
+      );
+}
+
 /// Idem for the displaying the Pokemon Moves
 class _PokemonMoveListView extends StatelessWidget {
   final Pokemon pokemon;
@@ -195,6 +286,7 @@ class _PokemonMoveListView extends StatelessWidget {
   const _PokemonMoveListView({Key key, @required this.pokemon})
       : super(key: key);
 
+  /// Retreives the move object by its name
   Widget _buildRow(int i) {
     final String moveName = pokemon.moves[i];
     final Move currentMove =
@@ -229,7 +321,7 @@ class _PokemonMoveListView extends StatelessWidget {
 class FavouriteButton extends StatefulWidget {
   final Pokemon pokemon;
   FavouriteButton({@required this.pokemon});
-  
+
   @override
   createState() => FavouriteState(pokemon: pokemon);
 }
