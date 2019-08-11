@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'views/favouritesview.dart';
+import 'views/pokedexsearch.dart';
 import 'views/pokedexview.dart';
 import 'views/settingsview.dart';
 
@@ -11,6 +12,8 @@ class PokedexApp extends StatelessWidget {
   static final ThemeData defaultTheme = ThemeData(
     primaryColor: Colors.red.shade800,
     accentColor: Colors.white,
+    cursorColor: Colors.white,
+    hintColor: Colors.white70,
   );
 
   @override
@@ -33,8 +36,6 @@ class MainView extends StatefulWidget {
 
 class MainViewState extends State<MainView>
     with SingleTickerProviderStateMixin {
-  void _searchPokemon() {}
-
   TabController _tabController;
   ScrollController _scrollViewController;
 
@@ -68,7 +69,9 @@ class MainViewState extends State<MainView>
               actions: <Widget>[
                 IconButton(
                   icon: Icon(Icons.search),
-                  onPressed: _searchPokemon,
+                  onPressed: () {
+                    showSearch(context: context, delegate: PokedexSearch());
+                  },
                 ),
                 IconButton(
                   icon: Icon(Icons.settings),
