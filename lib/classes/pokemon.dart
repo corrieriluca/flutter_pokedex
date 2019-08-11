@@ -200,13 +200,10 @@ class PokemonTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Hero(
-        tag: '${pokemon.name}_sprite',
-        child: Image.asset(
-          'assets/pokemonSprites/${pokemon.pokedexID}.png',
-          width: 52.0,
-          height: 52.0,
-        ),
+      leading: Image.asset(
+        'assets/pokemonSprites/${pokemon.pokedexID}.png',
+        width: 52.0,
+        height: 52.0,
       ),
       title: Text(
         Tools.capitalizeFirst(pokemon.name),

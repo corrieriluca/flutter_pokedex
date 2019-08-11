@@ -75,7 +75,6 @@ class PokedexViewState extends State<PokedexView>
   @override
   bool get wantKeepAlive => true;
 
-  /// Called at the starting of the app (when the widget is loaded in the tree)
   @override
   void initState() {
     super.initState();

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_pokedex/views/pokedexview.dart';
+import 'favouritesview.dart';
 
 import '../classes/pokemon.dart';
 import '../classes/move.dart';
@@ -213,13 +214,14 @@ class _PokemonEvolutionView extends StatelessWidget {
       return poke.name == pokemonName;
     });
     return Container(
+      margin: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
       child: GestureDetector(
         onTap: () {
           if (currentPoke == pokemon) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text(
                   'You are already looking at the page of this Pokémon...'),
-              duration: Duration(seconds: 2),
+              duration: const Duration(seconds: 2),
             ));
           } else {
             // Builds the Pokedex Entry View according to that Pokemon.
@@ -261,7 +263,7 @@ class _PokemonEvolutionView extends StatelessWidget {
               margin: EdgeInsets.all(4.0),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 pokemon.evolutionChain.members.length >= 1
                     ? _buildThumbnail(context, 0)
@@ -327,20 +329,31 @@ class FavouriteButton extends StatefulWidget {
 }
 
 class FavouriteState extends State<FavouriteButton> {
-  bool _debugFavourite = false;
+  bool isFavourite = false;
   final Pokemon pokemon;
 
   FavouriteState({@required this.pokemon});
+
+  @override
+  void initState() {
+    super.initState();
+    isFavourite = FavouritesViewState.isFavourite(pokemon);
+  }
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
       foregroundColor: Colors.white,
       backgroundColor: this.pokemon.types[0].color,
-      child: Icon(_debugFavourite ? Icons.favorite : Icons.favorite_border),
+      child: Icon(isFavourite ? Icons.favorite : Icons.favorite_border),
       onPressed: () {
         setState(() {
-          _debugFavourite = !_debugFavourite;
+          if (isFavourite) {
+            FavouritesViewState.removeFav(pokemon);
+          } else {
+            FavouritesViewState.addFavourite(pokemon);
+          }
+          isFavourite = !isFavourite;
         });
       },
     );

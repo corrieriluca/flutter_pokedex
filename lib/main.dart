@@ -74,9 +74,11 @@ class MainViewState extends State<MainView>
                   icon: Icon(Icons.settings),
                   onPressed: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SettingsView()));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SettingsView(),
+                      ),
+                    );
                   },
                 ),
               ],
