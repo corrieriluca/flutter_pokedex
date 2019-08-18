@@ -7,7 +7,15 @@ import 'pokedexentryview.dart';
 class PokedexSearch extends SearchDelegate<Pokemon> {
   @override
   ThemeData appBarTheme(BuildContext context) {
-    return Theme.of(context);
+    final theme = Theme.of(context);
+    return theme.copyWith(
+      textTheme: TextTheme(
+        title: TextStyle(
+          color: Colors.white,
+          fontSize: 18.0,
+        ),
+      ),
+    );
   }
 
   @override

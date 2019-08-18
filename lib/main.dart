@@ -74,13 +74,16 @@ class MainViewState extends State<MainView>
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.settings),
+                  icon: Icon(Icons.info),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SettingsView(),
-                      ),
+                    showAboutDialog(
+                      context: context,
+                      applicationName: "Pokédex",
+                      applicationVersion: "1.0",
+                      applicationIcon:
+                          Image.asset('assets/pokemonSprites/1.png'),
+                      applicationLegalese:
+                          "Sobrios venditare venditare et et venditare talia accedente nobiles accepta et.",
                     );
                   },
                 ),
