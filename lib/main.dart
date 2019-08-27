@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'views/favouritesview.dart';
 import 'views/pokedexsearch.dart';
 import 'views/pokedexview.dart';
-import 'views/settingsview.dart';
 
 void main() => runApp(PokedexApp());
 
@@ -80,10 +79,7 @@ class MainViewState extends State<MainView>
                       context: context,
                       applicationName: "Pokédex",
                       applicationVersion: "1.0",
-                      applicationIcon:
-                          Image.asset('assets/pokemonSprites/1.png'),
-                      applicationLegalese:
-                          "Sobrios venditare venditare et et venditare talia accedente nobiles accepta et.",
+                      applicationLegalese: "MIT License\n2019 Luca Corrieri",
                     );
                   },
                 ),
