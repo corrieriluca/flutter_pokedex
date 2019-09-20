@@ -200,6 +200,7 @@ class _PokemonStatsView extends StatelessWidget {
       );
 }
 
+/// Display the Evolution Chain of the Pokemon
 class _PokemonEvolutionView extends StatelessWidget {
   final Pokemon pokemon;
 
@@ -213,39 +214,42 @@ class _PokemonEvolutionView extends StatelessWidget {
         PokedexViewState.pokemons.firstWhere((Pokemon poke) {
       return poke.name == pokemonName;
     });
-    return Container(
-      margin: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
-      child: GestureDetector(
-        onTap: () {
-          if (currentPoke == pokemon) {
-            Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text(
-                  'You are already looking at the page of this Pokémon...'),
-              duration: const Duration(seconds: 2),
-            ));
-          } else {
-            // Builds the Pokedex Entry View according to that Pokemon.
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => PokedexEntryView(pokemon: currentPoke),
+    return Expanded(
+      flex: 1,
+      child: Container(
+        margin: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+        child: GestureDetector(
+          onTap: () {
+            if (currentPoke == pokemon) {
+              Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text(
+                    'You are already looking at the page of this Pokémon...'),
+                duration: const Duration(seconds: 2),
+              ));
+            } else {
+              // Builds the Pokedex Entry View according to that Pokemon.
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PokedexEntryView(pokemon: currentPoke),
+                ),
+              );
+            }
+          },
+          child: Column(
+            children: <Widget>[
+              Image.asset(
+                'assets/pokemonSprites/${currentPoke.pokedexID}.png',
               ),
-            );
-          }
-        },
-        child: Column(
-          children: <Widget>[
-            Image.asset(
-              'assets/pokemonSprites/${currentPoke.pokedexID}.png',
-            ),
-            Container(
-              child: Text(
-                '${currentPoke.name}',
-                style: TextStyle(fontSize: 16.0),
+              Container(
+                child: Text(
+                  '${currentPoke.name}',
+                  style: TextStyle(fontSize: 14.0),
+                ),
+                margin: EdgeInsets.all(4.0),
               ),
-              margin: EdgeInsets.all(4.0),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
