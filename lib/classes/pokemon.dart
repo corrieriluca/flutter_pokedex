@@ -127,65 +127,55 @@ class Pokemon {
 
   /// Returns the Container widget corresponding to the desired stat for this
   /// Pokemon (0 to 5).
-  TableRow _getStatWidget(int index) {
-    return TableRow(children: <Widget>[
-      Container(
-        width: 65,
-        alignment: Alignment.centerRight,
-        padding: EdgeInsets.all(8.0),
-        child: Text(
-          '${this._getStatName(index)} :',
-          style: TextStyle(
-            fontSize: 12.0,
-            color: Colors.grey.shade700,
-          ),
-        ),
-      ),
-      Padding(
-        padding: EdgeInsets.all(4.0),
-        child: Stack(
-          children: <Widget>[
-            Container(
-              width: 270,
-              height: 30,
-              decoration: BoxDecoration(
-                  color: Colors.grey[350],
-                  borderRadius: BorderRadius.all(Radius.circular(3))),
-            ),
-            Container(
-              width: stats[index] / 255 * 270,
-              height: 30,
-              decoration: BoxDecoration(
-                  color: _getStatColor(index),
-                  borderRadius: BorderRadius.all(Radius.circular(3))),
-            ),
-            Container(
-              width: 270,
-              height: 30,
-              alignment: Alignment.center,
-              child: Text(
-                '${stats[index]}',
-                style: TextStyle(fontWeight: FontWeight.w600),
+  Widget _getStatWidget(int index) {
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          Expanded(
+            flex: 2,
+            child: Text(
+              _getStatName(index),
+              //textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12.0,
+                color: Colors.grey.shade700,
               ),
-            )
-          ],
-        ),
-      )
-    ]);
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Text(
+              '${stats[index]}',
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
+          ),
+          Expanded(
+            flex: 5,
+            child: ProgressBar(
+              progress: stats[index] / 255,
+              backgroundColor: Colors.grey[350],
+              color: _getStatColor(index),
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   /// Returns all the stats widgets of this Pokemon.
   /// Only for diplaying in the PokedexEntryView.
   Widget getStatWidgets() {
-    var _statsWidgets = <TableRow>[];
+    var _statsWidgets = <Widget>[];
     for (int i = 0; i < 6; i++) {
       _statsWidgets.add(_getStatWidget(i));
     }
 
-    return Table(
-      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.max,
       children: _statsWidgets,
-      columnWidths: {0: FractionColumnWidth(0.25)},
     );
   }
 }
@@ -233,6 +223,41 @@ class PokemonTile extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+/// Represents a ProgressBar for displaying the base stats
+class ProgressBar extends StatelessWidget {
+  const ProgressBar({
+    @required this.progress,
+    this.color = Colors.red,
+    this.backgroundColor = Colors.grey,
+  });
+
+  final Color backgroundColor;
+  final Color color;
+  final double progress;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 7,
+      alignment: Alignment.centerLeft,
+      decoration: ShapeDecoration(
+        shape: StadiumBorder(),
+        color: Colors.grey[350],
+      ),
+      child: FractionallySizedBox(
+        widthFactor: progress,
+        heightFactor: 1.0,
+        child: Container(
+          decoration: ShapeDecoration(
+            shape: StadiumBorder(),
+            color: color,
+          ),
+        ),
+      ),
     );
   }
 }
