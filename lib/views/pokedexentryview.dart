@@ -213,7 +213,13 @@ class _PokemonEvolutionView extends StatelessWidget {
     final Pokemon currentPoke =
         PokedexViewState.pokemons.firstWhere((Pokemon poke) {
       return poke.name == pokemonName;
-    });
+    }, orElse: () => Pokemon.unknown());
+
+    if (currentPoke.name == 'unknown')
+    {
+      return Container();
+    }
+
     return Expanded(
       flex: 1,
       child: Container(

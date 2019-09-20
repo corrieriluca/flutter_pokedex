@@ -33,6 +33,19 @@ class Pokemon {
         weight = map['weight'],
         evolutionChain = EvolutionChain(map['evolution_chain']);
 
+  /// For dealing with unknown Pokemons
+  Pokemon.unknown()
+      : name = 'unknown',
+        pokedexID = 152,
+        types = <PokemonType>[],
+        abilities = <String>[],
+        moves = <String>[],
+        stats = <int>[],
+        description = "",
+        height = 0,
+        weight = 0,
+        evolutionChain = EvolutionChain("");
+
   /// Builds a List of PokemonTypes from the `types` column in the database.
   static List<PokemonType> _buildTypes(String input) {
     var typesDivided = input.split(";");
