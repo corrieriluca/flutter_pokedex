@@ -1,6 +1,6 @@
 # Flutter Pokédex
 
-[![License](https://img.shields.io/badge/License-MIT-red.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-MIT-red?style=for-the-badge)](LICENSE)
 
 A Pokédex App for iOS and Android of the 151 first Pokémons made with Flutter for educational purpose.
 
